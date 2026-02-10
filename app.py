@@ -20,200 +20,172 @@ st.set_page_config(
 
 CUSTOM_CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
-/* ── Global ─────────────────────────────────────────── */
+/* ── Global Styles ─────────────────────────────────── */
+:root {
+    --primary: #6366f1;
+    --primary-glow: rgba(99, 102, 241, 0.4);
+    --secondary: #a78bfa;
+    --bg-dark: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+}
+
 html, body, [class*="st-"] {
     font-family: 'Inter', sans-serif;
 }
+
 .stApp {
-    background: linear-gradient(135deg, #0f0c29 0%, #1a1a3e 40%, #24243e 100%);
-    color: #e0e0e0;
+    background: radial-gradient(circle at top right, #1e1b4b, #0f172a, #020617);
+    color: var(--text-main);
 }
 
-/* ── Sidebar ────────────────────────────────────────── */
+/* ── Animations ────────────────────────────────────── */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.fade-in {
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Glassmorphism Containers ──────────────────────── */
+.glass-panel {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+}
+
+.glass-panel:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(99, 102, 241, 0.15);
+}
+
+/* ── Sidebar Styling ───────────────────────────────── */
 section[data-testid="stSidebar"] {
-    background: rgba(15, 12, 41, 0.95) !important;
-    border-right: 1px solid rgba(255,255,255,0.06);
-}
-section[data-testid="stSidebar"] .stSelectbox label,
-section[data-testid="stSidebar"] .stNumberInput label,
-section[data-testid="stSidebar"] .stSlider label,
-section[data-testid="stSidebar"] .stMultiSelect label {
-    color: #b0b0d0 !important;
-    font-weight: 500;
-    font-size: 0.82rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    background: rgba(2, 6, 23, 0.8) !important;
+    backdrop-filter: blur(20px);
+    border-right: 1px solid var(--border-color);
 }
 
-/* ── Header ─────────────────────────────────────────── */
+.sidebar-brand h2 {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.5px;
+}
+
+/* ── Enhanced Header ───────────────────────────────── */
 .main-header {
-    background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.12));
-    border: 1px solid rgba(139,92,246,0.25);
-    border-radius: 16px;
-    padding: 2rem 2.5rem;
-    margin-bottom: 1.8rem;
-    backdrop-filter: blur(20px);
+    background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(167,139,250,0.1));
+    border: 1px solid rgba(167,139,250,0.2);
+    border-radius: 24px;
+    padding: 3rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
     position: relative;
     overflow: hidden;
 }
-.main-header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%);
-    animation: pulse-slow 8s ease-in-out infinite;
-}
-@keyframes pulse-slow {
-    0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.1); opacity: 1; }
-}
+
 .main-header h1 {
-    font-size: 2rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 3rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #a78bfa, #818cf8, #6366f1);
+    margin-bottom: 0.5rem;
+    background: linear-gradient(to right, #fff, #a78bfa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin: 0 0 0.3rem 0;
-    position: relative;
-    z-index: 1;
-}
-.main-header p {
-    color: #94a3b8;
-    font-size: 0.95rem;
-    font-weight: 400;
-    margin: 0;
-    position: relative;
-    z-index: 1;
 }
 
-/* ── KPI cards ──────────────────────────────────────── */
+/* ── KPI Cards ─────────────────────────────────────── */
+.kpi-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
 .kpi-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px;
-    padding: 1.4rem 1.6rem;
-    backdrop-filter: blur(12px);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 1.5rem;
     position: relative;
     overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
 .kpi-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(99,102,241,0.15);
+    transform: scale(1.03);
+    background: rgba(30, 41, 59, 0.8);
 }
-.kpi-card .label {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    color: #7c7caa;
+
+.kpi-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite;
+}
+
+.kpi-label {
+    font-size: 0.75rem;
     font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
     margin-bottom: 0.5rem;
 }
-.kpi-card .value {
-    font-size: 1.65rem;
+
+.kpi-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.8rem;
     font-weight: 800;
-    margin-bottom: 0.15rem;
+    color: #fff;
 }
-.kpi-card .sub {
-    font-size: 0.78rem;
+
+.kpi-sub {
+    font-size: 0.8rem;
     color: #64748b;
-    font-weight: 400;
+    margin-top: 0.3rem;
 }
-.kpi-green .value  { color: #34d399; }
-.kpi-red .value    { color: #f87171; }
-.kpi-blue .value   { color: #60a5fa; }
-.kpi-purple .value { color: #a78bfa; }
-.kpi-card .accent-bar {
+
+/* Color Accent Bars */
+.kpi-accent {
     position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 3px;
+    bottom: 0; left: 0; width: 100%; height: 4px;
 }
-.kpi-green  .accent-bar { background: linear-gradient(90deg, #34d399, #10b981); }
-.kpi-red    .accent-bar { background: linear-gradient(90deg, #f87171, #ef4444); }
-.kpi-blue   .accent-bar { background: linear-gradient(90deg, #60a5fa, #3b82f6); }
-.kpi-purple .accent-bar { background: linear-gradient(90deg, #a78bfa, #8b5cf6); }
+.accent-blue { background: #60a5fa; box-shadow: 0 4px 12px rgba(96,165,250,0.4); }
+.accent-purple { background: #a78bfa; box-shadow: 0 4px 12px rgba(167,139,250,0.4); }
+.accent-green { background: #34d399; box-shadow: 0 4px 12px rgba(52,211,153,0.4); }
+.accent-red { background: #f87171; box-shadow: 0 4px 12px rgba(248,113,113,0.4); }
 
-/* ── Section card ───────────────────────────────────── */
-.section-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 16px;
-    padding: 1.6rem 1.8rem;
-    margin-bottom: 1.4rem;
-    backdrop-filter: blur(12px);
-}
-.section-card h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #c4b5fd;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+/* ── Section Dividers ──────────────────────────────── */
+.modern-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+    margin: 3rem 0;
 }
 
-/* ── Table styling ──────────────────────────────────── */
-.var-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    border-radius: 12px;
-    overflow: hidden;
-}
-.var-table thead th {
-    background: rgba(99,102,241,0.15);
-    color: #a78bfa;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 0.85rem 1.2rem;
-    font-weight: 700;
-    text-align: right;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-.var-table thead th:first-child { text-align: left; }
-.var-table tbody td {
-    padding: 0.8rem 1.2rem;
-    font-size: 0.88rem;
-    color: #cbd5e1;
-    text-align: right;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    font-weight: 500;
-    font-variant-numeric: tabular-nums;
-}
-.var-table tbody td:first-child {
-    text-align: left;
-    color: #94a3b8;
-    font-weight: 600;
-}
-.var-table tbody tr:hover {
-    background: rgba(99,102,241,0.06);
-}
-.var-table tbody tr:last-child td { border-bottom: none; }
-
-/* ── Button styling ─────────────────────────────────── */
-section[data-testid="stSidebar"] .stButton > button {
-    width: 100%;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 10px !important;
-    padding: 0.65rem 1rem !important;
-    font-weight: 700 !important;
-    font-size: 0.9rem !important;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease !important;
-    box-shadow: 0 4px 16px rgba(99,102,241,0.25) !important;
-}
-section[data-testid="stSidebar"] .stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(99,102,241,0.4) !important;
+/* ── Charts Wrapper ────────────────────────────────── */
+.chart-container {
+    background: rgba(15, 23, 42, 0.3);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 1rem;
 }
 
 /* ── Hide default streamlit elements ────────────────── */
@@ -221,55 +193,12 @@ section[data-testid="stSidebar"] .stButton > button:hover {
 footer {visibility: hidden;}
 header {visibility: hidden;}
 
-/* ── Divider ────────────────────────────────────────── */
-.divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(139,92,246,0.3), transparent);
-    margin: 1.5rem 0;
-}
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #475569; }
 
-/* ── Sidebar logo area ──────────────────────────────── */
-.sidebar-brand {
-    text-align: center;
-    padding: 1rem 0 1.5rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    margin-bottom: 1.5rem;
-}
-.sidebar-brand h2 {
-    font-size: 1.2rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #a78bfa, #6366f1);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin: 0;
-}
-.sidebar-brand p {
-    color: #64748b;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin: 0.3rem 0 0 0;
-    font-weight: 600;
-}
-
-/* ── Status badge ───────────────────────────────────── */
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    background: rgba(52,211,153,0.1);
-    border: 1px solid rgba(52,211,153,0.25);
-    border-radius: 20px;
-    padding: 0.3rem 0.9rem;
-    font-size: 0.72rem;
-    color: #34d399;
-    font-weight: 600;
-}
-.status-badge-warn {
-    background: rgba(251,191,36,0.1);
-    border-color: rgba(251,191,36,0.25);
-    color: #fbbf24;
-}
 </style>
 """
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
@@ -373,13 +302,13 @@ def calculate_var_cvar(
     return pd.DataFrame(results)
 
 
-def kpi_card(label: str, value: str, sub: str, color: str) -> str:
+def kpi_card(label: str, value: str, sub: str, accent: str) -> str:
     return f"""
-    <div class="kpi-card kpi-{color}">
-        <div class="accent-bar"></div>
-        <div class="label">{label}</div>
-        <div class="value">{value}</div>
-        <div class="sub">{sub}</div>
+    <div class="kpi-card fade-in">
+        <div class="kpi-label">{label}</div>
+        <div class="kpi-value">{value}</div>
+        <div class="kpi-sub">{sub}</div>
+        <div class="kpi-accent accent-{accent}"></div>
     </div>
     """
 
@@ -421,8 +350,10 @@ VAR_COLORS = {
 # ─────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
-        '<div class="sidebar-brand"><h2>📊 VaR Engine</h2>'
-        '<p>Monte Carlo Simulation</p></div>',
+        '<div class="sidebar-brand fade-in">'
+        '<div style="font-size: 2.5rem; margin-bottom: 0.5rem;">💎</div>'
+        '<h2>VaR Engine</h2>'
+        '<p>Quant Precision Elite</p></div>',
         unsafe_allow_html=True,
     )
 
@@ -474,7 +405,7 @@ with st.sidebar:
         else:
             st.caption(f"✅ Weights sum to {total_w:.2f}")
 
-    st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="modern-divider"></div>', unsafe_allow_html=True)
     st.markdown("#### ⚙️ Simulation Parameters")
 
     num_sims = st.select_slider(
@@ -504,7 +435,7 @@ with st.sidebar:
         format_func=lambda x: f"{x:.1%}",
     )
 
-    st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="modern-divider"></div>', unsafe_allow_html=True)
 
     run_sim = st.button("🚀  Run Simulation", use_container_width=True)
 
@@ -513,9 +444,9 @@ with st.sidebar:
 # MAIN DASHBOARD
 # ─────────────────────────────────────────────────────────────────────
 st.markdown(
-    '<div class="main-header">'
-    "<h1>Monte Carlo Value-at-Risk Engine</h1>"
-    "<p>Simulate portfolio risk with correlated random walks · Live market data · Interactive analytics</p>"
+    '<div class="main-header fade-in">'
+    "<h1>Monte Carlo Portfolio Analytics</h1>"
+    "<p style='color:#94a3b8; font-size:1.1rem;'>Stunning risk visualization powered by correlated random walks</p>"
     "</div>",
     unsafe_allow_html=True,
 )
@@ -563,11 +494,14 @@ if run_sim:
 if "results" not in st.session_state:
     # Show placeholder
     st.markdown(
-        '<div class="section-card">'
-        "<h3>🎯 Ready to Simulate</h3>"
-        "<p style='color:#64748b'>Configure your portfolio in the sidebar and hit "
-        "<strong>Run Simulation</strong> to generate risk analytics.</p>"
-        "</div>",
+        '<div class="glass-panel fade-in" style="text-align:center; padding: 4rem 2rem;">'
+        '<div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>'
+        '<h3 style="color:#fff; font-size: 1.5rem; margin-bottom: 1rem;">Ready to Simulate</h3>'
+        '<p style="color:#94a3b8; font-size: 1rem; max-width: 500px; margin: 0 auto;">'
+        'Configure your portfolio parameters in the sidebar and click '
+        '<strong style="color:#a78bfa;">Run Simulation</strong> to generate '
+        'comprehensive risk analytics and projections.</p>'
+        '</div>',
         unsafe_allow_html=True,
     )
 
@@ -594,7 +528,7 @@ if "results" not in st.session_state:
                 height=380,
                 legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, key="price_preview", width="stretch")
         except Exception:
             pass
 
@@ -622,57 +556,23 @@ worst_case = terminal_values.min()
 best_case = terminal_values.max()
 
 # ── KPI Cards ───────────────────────────────────────────────────────
-st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+st.markdown('<div class="modern-divider"></div>', unsafe_allow_html=True)
 
 c1, c2, c3, c4 = st.columns(4)
 with c1:
-    st.markdown(
-        kpi_card(
-            "Expected Portfolio Value",
-            f"${mean_terminal:,.0f}",
-            f"Mean of {params['num_sims']:,} simulations",
-            "green",
-        ),
-        unsafe_allow_html=True,
-    )
+    st.markdown(kpi_card("Expected Value", f"${mean_terminal:,.0f}", f"Mean terminal value", "green"), unsafe_allow_html=True)
 with c2:
-    st.markdown(
-        kpi_card(
-            "Value at Risk (95%)",
-            f"${abs(var_95_dollar):,.0f}",
-            f"{var_95_pct:.2%} potential loss",
-            "red",
-        ),
-        unsafe_allow_html=True,
-    )
+    st.markdown(kpi_card("Value at Risk (95%)", f"${abs(var_95_dollar):,.0f}", f"{var_95_pct:.2%} potential loss", "red"), unsafe_allow_html=True)
 with c3:
-    st.markdown(
-        kpi_card(
-            "Conditional VaR (95%)",
-            f"${abs(cvar_95_pct * inv):,.0f}",
-            f"{cvar_95_pct:.2%} expected shortfall",
-            "blue",
-        ),
-        unsafe_allow_html=True,
-    )
+    st.markdown(kpi_card("Conditional VaR (95%)", f"${abs(cvar_95_pct * inv):,.0f}", f"Expected shortfall", "blue"), unsafe_allow_html=True)
 with c4:
-    st.markdown(
-        kpi_card(
-            "Worst-Case Scenario",
-            f"${worst_case:,.0f}",
-            f"Best: ${best_case:,.0f}",
-            "purple",
-        ),
-        unsafe_allow_html=True,
-    )
+    st.markdown(kpi_card("Best Case", f"${best_case:,.0f}", f"Max simulated value", "purple"), unsafe_allow_html=True)
 
-st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+st.markdown('<div class="modern-divider"></div>', unsafe_allow_html=True)
 
 # ── Simulated Portfolio Paths ───────────────────────────────────────
-st.markdown(
-    '<div class="section-card"><h3>📈 Simulated Portfolio Paths</h3></div>',
-    unsafe_allow_html=True,
-)
+st.markdown('<div class="glass-panel fade-in"><h3>📈 Simulated Portfolio Paths</h3>', unsafe_allow_html=True)
+# ... chart rendering ...
 
 # Sample paths to keep the chart responsive
 max_display = min(500, portfolio_paths.shape[0])
@@ -759,16 +659,14 @@ fig_paths.update_layout(
         xanchor="right", x=1, font=dict(size=11),
     ),
 )
-st.plotly_chart(fig_paths, use_container_width=True)
+st.plotly_chart(fig_paths, width="stretch")
+st.markdown('</div>', unsafe_allow_html=True)
 
 # ── Return Distribution ────────────────────────────────────────────
 col_hist, col_table = st.columns([3, 2])
 
 with col_hist:
-    st.markdown(
-        '<div class="section-card"><h3>📊 Terminal Return Distribution</h3></div>',
-        unsafe_allow_html=True,
-    )
+    st.markdown('<div class="glass-panel fade-in"><h3>📊 Terminal Return Distribution</h3>', unsafe_allow_html=True)
 
     fig_hist = go.Figure()
     fig_hist.add_trace(
@@ -813,13 +711,11 @@ with col_hist:
         yaxis_title="Frequency",
         showlegend=False,
     )
-    st.plotly_chart(fig_hist, use_container_width=True)
+    st.plotly_chart(fig_hist, width="stretch")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with col_table:
-    st.markdown(
-        '<div class="section-card"><h3>📋 VaR & CVaR Summary</h3></div>',
-        unsafe_allow_html=True,
-    )
+    st.markdown('<div class="glass-panel fade-in"><h3>📋 VaR & CVaR Summary</h3>', unsafe_allow_html=True)
 
     # Build HTML table
     table_html = '<table class="var-table"><thead><tr>'
@@ -834,14 +730,12 @@ with col_table:
     table_html += "</tbody></table>"
 
     st.markdown(table_html, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     # Additional stats
-    st.markdown('<div style="margin-top:1.5rem"></div>', unsafe_allow_html=True)
-    st.markdown(
-        '<div class="section-card"><h3>📐 Distribution Statistics</h3></div>',
-        unsafe_allow_html=True,
-    )
-
+    st.markdown('<div style="margin-top:2rem"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="glass-panel fade-in"><h3>📐 Distribution Statistics</h3>', unsafe_allow_html=True)
+    # ... stats table ...
     stats_data = {
         "Metric": [
             "Mean Return", "Median Return", "Std Deviation",
@@ -863,17 +757,15 @@ with col_table:
         stats_html += f'<tr><td>{row["Metric"]}</td><td>{row["Value"]}</td></tr>'
     stats_html += "</tbody></table>"
     st.markdown(stats_html, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # ── Portfolio Weights Breakdown ─────────────────────────────────────
-st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+st.markdown('<div class="modern-divider"></div>', unsafe_allow_html=True)
 
 col_pie, col_corr = st.columns(2)
 
 with col_pie:
-    st.markdown(
-        '<div class="section-card"><h3>🧩 Portfolio Allocation</h3></div>',
-        unsafe_allow_html=True,
-    )
+    st.markdown('<div class="glass-panel fade-in"><h3>🧩 Portfolio Allocation</h3>', unsafe_allow_html=True)
     fig_pie = go.Figure(
         data=[
             go.Pie(
@@ -899,13 +791,11 @@ with col_pie:
             )
         ],
     )
-    st.plotly_chart(fig_pie, use_container_width=True)
+    st.plotly_chart(fig_pie, width="stretch")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with col_corr:
-    st.markdown(
-        '<div class="section-card"><h3>🔗 Return Correlation Matrix</h3></div>',
-        unsafe_allow_html=True,
-    )
+    st.markdown('<div class="glass-panel fade-in"><h3>🔗 Return Correlation Matrix</h3>', unsafe_allow_html=True)
     log_rets = st.session_state["log_returns"]
     corr = log_rets.corr()
 
@@ -929,16 +819,15 @@ with col_corr:
             ),
         )
     )
-    fig_corr.update_layout(
-        **PLOTLY_LAYOUT,
-        height=380,
-        xaxis=dict(side="bottom", tickfont=dict(size=11)),
-        yaxis=dict(autorange="reversed", tickfont=dict(size=11)),
-    )
-    st.plotly_chart(fig_corr, use_container_width=True)
+    fig_corr.update_layout(**PLOTLY_LAYOUT)
+    fig_corr.update_xaxes(side="bottom", tickfont=dict(size=11))
+    fig_corr.update_yaxes(autorange="reversed", tickfont=dict(size=11))
+    fig_corr.update_layout(height=380)
+    st.plotly_chart(fig_corr, width="stretch")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # ── Footer ──────────────────────────────────────────────────────────
-st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+st.markdown('<div class="modern-divider"></div>', unsafe_allow_html=True)
 st.markdown(
     '<p style="text-align:center;color:#475569;font-size:0.75rem;padding:1rem 0">'
     "Monte Carlo VaR Engine · Built with Streamlit & Plotly · "
